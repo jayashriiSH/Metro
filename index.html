@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Metro Ticket Booking</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+    }
+
+    /* Left side (Booking form) */
+    .left {
+      flex: 1;
+      background: url('ticket bookig thng (1).jpg') no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .form-box {
+      background: rgba(255, 255, 255, 0.9);
+      padding: 30px;
+      border-radius: 12px;
+      width: 300px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .form-box h2 {
+      margin-bottom: 20px;
+    }
+
+    select, button {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #007bff;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    /* Right side (Route Map & Stations) */
+    .right {
+      flex: 1;
+      background: #f8f9fa;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      position: relative;
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      padding: 10px 20px;
+      cursor: pointer;
+      background: #e0e0e0;
+      border-radius: 8px 8px 0 0;
+      margin: 0 5px;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .tab.active {
+      background: #0078ff;
+      color: #fff;
+      box-shadow: 0 -2px 8px rgba(0,120,255,0.6);
+    }
+
+    /* Line boxes */
+    .metro-line {
+      display: none;
+      background: #fff;
+      padding: 20px;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 300px;
+      margin-bottom: 20px;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .metro-line.active {
+      display: block;
+    }
+
+    .metro-line h2 {
+      text-align: center;
+      font-size: 1.2rem;
+      margin-bottom: 15px;
+      color: #333;
+    }
+   
+
+
+    .metro-line ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .metro-line li {
+      margin: 10px 0;
+    }
+
+    .metro-line li a {
+      display: block;
+      text-decoration: none;
+      background: #f0f0f0;
+      color: #333;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .metro-line li a:hover {
+      background: #0078ff;
+      color: #fff;
+      box-shadow: 0 0 12px rgba(0,120,255,0.7);
+      transform: scale(1.05);
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    /* Train animation */
+    .train {
+      width: 200px;
+      position: absolute;
+      bottom: 20px;
+      animation: moveTrain 8s linear infinite;
+      background: transparent;
+  mix-blend-mode: darken; 
+    }
+
+    @keyframes moveTrain {
+      0% { left: -250px; }
+      100% { left: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Left side -->
+  <div class="left">
+    <div class="form-box">
+      <h2>🚇 Metro Ticket Booking</h2>
+      <!-- Inside your form-box -->
+<label>Source Station:</label>
+<select id="source">
+  <option>-- Select Source --</option>
+  <option value="0">Wimco Nagar Depot</option>
+  <option value="1">Wimco Nagar</option>
+  <option value="2">Thiruvotriyur</option>
+  <option value="3">Thiruvottriyur Theradi</option>
+  <option value="4">Kaladipet</option>
+  <option value="5">Tollgate</option>
+  <option value="6">New Washermenpet</option>
+  <option value="7">Tondiarpet</option>
+  <option value="8">Sir Thiyagaraya College</option>
+  <option value="9">Washermenpet</option>
+  <option value="10">Mannadi</option>
+  <option value="11">Highcourt</option>
+  <option value="12">Puratchi Thalaivar Dr. M.G. Ramachandran Central Metro</option>
+  <option value="13">Government Estate</option>
+  <option value="14">LIC</option>
+  <option value="15">Thousand Lights</option>
+  <option value="16">AG – DMS</option>
+  <option value="17">Teynampet</option>
+  <option value="18">Nandanam</option>
+  <option value="19">Saidapet Metro</option>
+  <option value="20">Little Mount</option>
+  <option value="21">Guindy</option>
+  <option value="22">Arignar Anna Alandur Metro</option>
+  <option value="23">OTA-Nanganallur Road</option>
+  <option value="24">Meenambakkam</option>
+  <option value="25">Chennai International Airport</option>
+</select>
+
+<label>Destination Station:</label>
+<select id="destination">
+  <option>-- Select Destination --</option>
+  <!-- same as above with same value numbers -->
+  <option value="0">Wimco Nagar Depot</option>
+  <option value="1">Wimco Nagar</option>
+  <option value="2">Thiruvotriyur</option>
+  <option value="3">Thiruvottriyur Theradi</option>
+  <option value="4">Kaladipet</option>
+  <option value="5">Tollgate</option>
+  <option value="6">New Washermenpet</option>
+  <option value="7">Tondiarpet</option>
+  <option value="8">Sir Thiyagaraya College</option>
+  <option value="9">Washermenpet</option>
+  <option value="10">Mannadi</option>
+  <option value="11">Highcourt</option>
+  <option value="12">Puratchi Thalaivar Dr. M.G. Ramachandran Central Metro</option>
+  <option value="13">Government Estate</option>
+  <option value="14">LIC</option>
+  <option value="15">Thousand Lights</option>
+  <option value="16">AG – DMS</option>
+  <option value="17">Teynampet</option>
+  <option value="18">Nandanam</option>
+  <option value="19">Saidapet Metro</option>
+  <option value="20">Little Mount</option>
+  <option value="21">Guindy</option>
+  <option value="22">Arignar Anna Alandur Metro</option>
+  <option value="23">OTA-Nanganallur Road</option>
+  <option value="24">Meenambakkam</option>
+  <option value="25">Chennai International Airport</option>
+</select>
+
+<button onclick="calculateFare()">Book Ticket</button>
+
+<p id="fareResult" style="font-weight:bold; margin-top:10px;"></p>
+
+<script>
+function calculateFare() {
+  let source = document.getElementById("source").value;
+  let destination = document.getElementById("destination").value;
+
+  if (source === "-- Select Source --" || destination === "-- Select Destination --") {
+    alert("Please select both source and destination stations.");
+    return;
+  }
+
+  if (source === destination) {
+    document.getElementById("fareResult").innerText = "⚠️ Source and destination cannot be the same!";
+    return;
+  }
+
+  let distance = Math.abs(source - destination); // difference in station indexes
+  let fare = 10 + (distance * 5); // base ₹10 + ₹5 per station
+
+  document.getElementById("fareResult").innerText = 
+    "✅ Ticket booked! Fare: ₹" + fare;
+}
+</script>
+
+    </div>
+  </div>
+
+  <!-- Right side -->
+  <div class="right">
+    <!-- Tabs -->
+    <div class="tabs">
+      <div class="tab active" onclick="showLine('line1')">Line 1</div>
+      <div class="tab" onclick="showLine('line2')">Line 2</div>
+    </div>
+
+    <!-- Line 1 -->
+    <div id="line1" class="metro-line active">
+      <h2>Line 1</h2>
+      <ul>
+        <li><a href="wimco.html">Wimco Nagar Depot</a></li>
+<li><a href="wimconagar.html">Wimco Nagar</a></li>
+<li><a href="thiruvotriyur.html">Thiruvotriyur</a></li>
+<li><a href="thiruvottriyurtheradi.html">Thiruvottriyur Theradi</a></li>
+<li><a href="kaladipet.html">Kaladipet</a></li>
+<li><a href="tollgate.html">Tollgate</a></li>
+<li><a href="newwashermenpet.html">New Washermenpet</a></li>
+<li><a href="tondiarpet.html">Tondiarpet</a></li>
+
+      </ul>
+    </div>
+
+    <!-- Line 2 -->
+    <div id="line2" class="metro-line">
+      <h2>Line 2</h2>
+      <ul>
+        <li><a href="airport.html">Airport</a></li>
+        <li><a href="meenambakkam.html">Meenambakkam</a></li>
+        <li><a href="nanganallur.html">Nanganallur Road</a></li>
+        <li><a href="guindy.html">Guindy</a></li>
+        <li><a href="saidapet.html">Saidapet</a></li>
+        <li><a href="alwapet.html">Alwapet</a></li>
+      </ul>
+    </div>
+
+    <img src="ticket bookig thng (3).gif" class="train" alt="Metro Train">
+  </div>
+
+  <script>
+    function showLine(lineId) {
+      // Hide all lines
+      document.querySelectorAll('.metro-line').forEach(el => el.classList.remove('active'));
+      // Remove active tab
+      document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+      // Show selected line
+      document.getElementById(lineId).classList.add('active');
+      // Activate correct tab
+      event.target.classList.add('active');
+    }
+  </script>
+</body>
+</html>
